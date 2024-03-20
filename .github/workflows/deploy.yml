@@ -42,7 +42,7 @@ jobs:
           fi
       
       - name: Merge PR into main and update demo-1
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+        if: github.event_name == 'pull_request'
         run: |
           git fetch origin ${{ steps.branch_name.outputs.branch }}
           git merge --no-ff --no-edit ${{ steps.branch_name.outputs.branch }}
