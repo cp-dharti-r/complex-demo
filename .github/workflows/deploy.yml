@@ -19,17 +19,17 @@ jobs:
           git merge ${{ github.event.pull_request.head.ref }}
           git push origin main
 
-      - name: Check if website-main has changes
+      - name: Check if demo-1 has changes
         run: |
-          git fetch origin website-main
-          CHANGES=$(git rev-list --count HEAD..origin/website-main)
+          git fetch origin demo-1
+          CHANGES=$(git rev-list --count HEAD..origin/demo-1)
           if [ "$CHANGES" -gt "0" ]; then
-            echo "Website-main has changes. Merging changes from main."
-            git checkout website-main
+            echo "demo-1 has changes. Merging changes from main."
+            git checkout demo-1
             git checkout main -- web/
             git add -A web/
             git commit -m "Merge web folder from main branch"
-            git push origin website-main
+            git push origin demo-1
           else
-            echo "Website-main has no changes. Skipping merge."
+            echo "demo-1 has no changes. Skipping merge."
           fi
