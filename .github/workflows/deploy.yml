@@ -40,14 +40,15 @@ jobs:
             echo "Changes found in web folder files between website and demo-1 branches."
             echo "::set-output name=web_folder_changes::true"
           fi
-      
+
       - name: Merge PR into main and update demo-1
         if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main'
         run: |
-          git fetch origin demo-1
+          git fetch origin ${{ steps.branch_name.outputs.branch }}
+          git checkout -b pr-branch FETCH_HEAD
           git checkout demo-1
           git reset --hard origin/demo-1
-          git checkout ${{ steps.branch_name.outputs.branch }}
+          git checkout pr-branch
           git diff origin/demo-1 web/ | git apply
           git add .
           git commit -m "Merging changes from ${{ steps.branch_name.outputs.branch }} to demo-1"
