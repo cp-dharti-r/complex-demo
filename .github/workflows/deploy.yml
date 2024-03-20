@@ -20,16 +20,10 @@ jobs:
       - name: Check for changes in web folder
         id: check_web_folder
         run: |
-          if [[ -n $(git diff --name-only main..$branch_name | grep '^web/') ]]; then
+          if [[ -n $(git diff --name-only main..demo-1 | grep '^web/') ]]; then
             echo "Web folder has changes."
             echo "::set-output name=web_changes::true"
           else
             echo "No changes in web folder."
             echo "::set-output name=web_changes::false"
           fi
-
-      - name: Merge PR into main
-        if: steps.check_web_folder.outputs.web_changes == 'false'
-        run: |
-          git fetch origin ${{ github.event.pull_request.head.ref }}
-          git merge --no-ff --no-edit ${{ github.event.pull_request.head.ref }}
