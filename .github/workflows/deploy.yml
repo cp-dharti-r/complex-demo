@@ -41,8 +41,8 @@ jobs:
             echo "::set-output name=web_folder_changes::true"
           fi
       
-       - name: Merge PR into main and update demo-1
-       id: Merge main
+      - name: Merge PR into main and update demo-1
+        id: Merge main
         run: |
           git fetch origin ${{ steps.branch_name.outputs.branch }}
           git merge --no-ff --no-edit ${{ steps.branch_name.outputs.branch }}
