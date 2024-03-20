@@ -19,16 +19,17 @@ jobs:
           git merge ${{ github.event.pull_request.head.ref }}
           git push origin main
 
-      - name: Check if demo-1 is ahead of main
+      - name: Check if demo-1 has changes
         run: |
-          git fetch origin main
           git fetch origin demo-1
-          git checkout main
-          if git merge-base --is-ancestor demo-1 main; then
-            echo "Demo 1 is ahead of main. Merging changes from main."
+          CHANGES=$(git rev-list --count HEAD..origin/demo-1)
+          if [ "$CHANGES" -gt "0" ]; then
+            echo "demo-1 has changes. Merging changes from main."
             git checkout demo-1
-            git merge main
+            git checkout main -- web/
+            git add -A web/
+            git commit -m "Merge web folder from main branch"
             git push origin demo-1
           else
-            echo "No changes to merge into demo-1."
+            echo "demo-1 has no changes. Skipping merge."
           fi
