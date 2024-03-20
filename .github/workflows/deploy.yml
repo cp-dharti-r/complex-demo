@@ -20,15 +20,15 @@ jobs:
       - name: Get list of files in web folder in website branch
         id: website_web_files
         run: |
-          git ls-tree -r --name-only ${{ steps.branch_name.outputs.branch }} web/
-          echo "::set-output name=web_files::$(git ls-tree -r --name-only ${{ steps.branch_name.outputs.branch }} web/)"
+          git ls-tree -r --name-only HEAD web/
+          echo "::set-output name=web_files::$(git ls-tree -r --name-only HEAD web/)"
 
       - name: Get list of files in web folder in demo-1 branch
         id: demo_1_web_files
         run: |
           git fetch origin demo-1
-          git ls-tree -r --name-only demo-1 web/
-          echo "::set-output name=demo_1_web_files::$(git ls-tree -r --name-only demo-1 web/)"
+          git ls-tree -r --name-only origin/demo-1 web/
+          echo "::set-output name=demo_1_web_files::$(git ls-tree -r --name-only origin/demo-1 web/)"
 
       - name: Compare web folder files between website and demo-1 branches
         id: compare_web_folders
