@@ -21,7 +21,8 @@ jobs:
         id: check_web_folder_demo_1
         run: |
           git fetch origin demo-1
-          if [[ -n $(git diff --name-only demo-1..$branch_name | grep '^web/') ]]; then
+          git checkout demo-1
+          if [[ -n $(git diff --name-only demo-1...${{ steps.branch_name.outputs.branch }} | grep '^web/') ]]; then
             echo "Web folder has changes in demo-1 branch."
             echo "::set-output name=demo_1_web_changes::true"
           else
