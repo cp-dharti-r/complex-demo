@@ -1,28 +1,18 @@
-name: Merge PR to main and website-main
+name: Auto Merge PR
 
 on:
   pull_request:
-    types: [closed]
+    branches:
+      - main  # Change to your main branch name
 
 jobs:
   merge:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Check if demo-1 has changes
-        run: |
-          git fetch origin demo-1
-          CHANGES=$(git rev-list --count HEAD..origin/demo-1)
-          if [ "$CHANGES" -gt "0" ]; then
-            echo "demo-1 has changes. Merging changes from main."
-            git checkout demo-1
-            git checkout main -- web/
-            git add -A web/
-            git commit -m "Merge web folder from main branch"
-            git push origin demo-1
-          else
-            echo "demo-1 has no changes. Skipping merge."
-          fi
+      - name: Merge PR into demo-1
+        run: git fetch origin ${{ github.event.pull_request.head.ref }} && git merge --no-ff --no-edit ${{ github.event.pull_request.head.ref }} -m "Auto-merging PR #${{ github.event.pull_request.number }}"
+        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'demo-1'
