@@ -22,10 +22,10 @@ jobs:
         run: |
           git fetch origin demo-1
           git checkout demo-1
-          if [[ -n $(git diff --name-only demo-1...${{ steps.branch_name.outputs.branch }} | grep '^web/') ]]; then
-            echo "Web folder has changes in demo-1 branch."
-            echo "::set-output name=demo_1_web_changes::true"
-          else
+          if git diff --quiet --exit-code -- web/; then
             echo "No changes in web folder in demo-1 branch."
             echo "::set-output name=demo_1_web_changes::false"
+          else
+            echo "Web folder has changes in demo-1 branch."
+            echo "::set-output name=demo_1_web_changes::true"
           fi
