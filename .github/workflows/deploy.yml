@@ -49,7 +49,7 @@ jobs:
           git checkout demo-1
           git reset --hard origin/demo-1
           git checkout pr-branch
-          git diff origin/demo-1 web/ | git apply
+          git diff origin/demo-1..HEAD -- web/
           git add .
           git commit -m "Merging changes from ${{ steps.branch_name.outputs.branch }} to demo-1"
           git push origin demo-1
