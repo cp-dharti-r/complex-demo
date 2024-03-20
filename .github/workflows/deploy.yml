@@ -1,9 +1,9 @@
-name: Auto Merge PR
+name: Merge with Folder Check
 
 on:
   pull_request:
     branches:
-      - main  # Change to your main branch name
+      - main
 
 jobs:
   merge:
@@ -13,6 +13,23 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: Merge PR into demo-1
-        run: git fetch origin ${{ github.event.pull_request.head.ref }} && git merge --no-ff --no-edit ${{ github.event.pull_request.head.ref }} -m "Auto-merging PR #${{ github.event.pull_request.number }}"
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'demo-1'
+      - name: Get PR branch name
+        id: branch_name
+        run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
+
+      - name: Check for changes in web folder
+        id: check_web_folder
+        run: |
+          if [[ -n $(git diff --name-only main..$branch_name | grep '^web/') ]]; then
+            echo "Web folder has changes."
+            echo "::set-output name=web_changes::true"
+          else
+            echo "No changes in web folder."
+            echo "::set-output name=web_changes::false"
+          fi
+
+      - name: Merge PR into main
+        if: steps.check_web_folder.outputs.web_changes == 'false'
+        run: |
+          git fetch origin ${{ github.event.pull_request.head.ref }}
+          git merge --no-ff --no-edit ${{ github.event.pull_request.head.ref }}
