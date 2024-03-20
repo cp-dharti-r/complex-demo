@@ -17,13 +17,14 @@ jobs:
         id: branch_name
         run: echo "::set-output name=branch::${GITHUB_REF#refs/heads/}"
 
-      - name: Check for changes in web folder
-        id: check_web_folder
+      - name: Check for changes in web folder in demo-1 branch
+        id: check_web_folder_demo_1
         run: |
-          if [[ -n $(git diff --name-only main..demo-1 | grep '^web/') ]]; then
-            echo "Web folder has changes."
-            echo "::set-output name=web_changes::true"
+          git fetch origin demo-1
+          if [[ -n $(git diff --name-only demo-1..$branch_name | grep '^web/') ]]; then
+            echo "Web folder has changes in demo-1 branch."
+            echo "::set-output name=demo_1_web_changes::true"
           else
-            echo "No changes in web folder."
-            echo "::set-output name=web_changes::false"
+            echo "No changes in web folder in demo-1 branch."
+            echo "::set-output name=demo_1_web_changes::false"
           fi
