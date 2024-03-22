@@ -24,7 +24,7 @@ jobs:
           git checkout demo-1
           git fetch origin
           git pull origin demo-1
-          git checkout main -- web/
+          git checkout web -- web/
           git checkout demo-1
-          git merge main --no-edit
+          git merge web --no-edit
           git push origin demo-1
