@@ -27,14 +27,14 @@ jobs:
           git fetch origin
           git checkout origin/demo-2
           git pull origin demo-2
-          # Reset any changes within the admin folder in demo-2 to ensure clean merge
+          echo "Reset any changes within the admin folder in demo-2 to ensure clean merge"
           git reset --hard
           git clean -df
-          # Check out only the differences from main into demo-2's admin folder
+          echo "Check out only the differences from main into demo-2's admin folder"
           git diff --name-only origin/web/admin...demo-2 | xargs -I {} git checkout origin/web -- {}
-          # Add and commit changes
+          echo "Add and commit changes"
           git add .
-          # git commit -m "Merge changes from main into demo-2's admin folder"
-          # Merge changes from main into demo-2
+          echo "git commit -m "Merge changes from main into demo-2's admin folder""
+          echo "Merge changes from main into demo-2"
           git merge origin/web
           git push origin HEAD:demo-2
