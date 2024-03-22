@@ -13,9 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Fetch demo-1 branch
+        run: git fetch origin demo-1:demo-1
+
+      - name: Checkout demo-1 branch
+        run: git checkout demo-1
+
       - name: Merge web branch to demo-1
         run: |
-          git fetch origin
-          git checkout origin/demo-1
           git merge origin/web
           git push origin demo-1
