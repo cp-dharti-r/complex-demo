@@ -21,5 +21,6 @@ jobs:
 
       - name: Merge web branch to demo-1
         run: |
-          git merge origin/web
+          git merge --no-ff --no-commit origin/web
+          git commit -m "Merge changes from web branch"
           git push origin demo-1
