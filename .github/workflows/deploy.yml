@@ -1,7 +1,7 @@
 name: Merge with Demo-1 Check
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -21,12 +21,10 @@ jobs:
 
       - name: Merge web branch to demo-1
         run: |
-          git fetch origin
           git checkout demo-1
-          git reset --hard origin/demo-1
-          git diff origin/demo-1..HEAD -- web/ > web_changes.patch
-          git apply --reject < web_changes.patch
-          rm web_changes.patch
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Merging changes from ${{ steps.branch_name.outputs.branch }} to demo-1"
+          git fetch origin
+          git pull origin demo-1
+          git checkout main -- web_folder/
+          git checkout demo-1
+          git merge main --no-edit
           git push origin demo-1
