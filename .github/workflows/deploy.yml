@@ -13,12 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Fetch demo-1 branch
-        run: git fetch origin demo-1:demo-1
-
-      - name: Checkout demo-1 branch
-        run: git checkout demo-1
-
       - name: Merge web branch to demo-1
         run: |
           git fetch origin
@@ -33,6 +27,14 @@ jobs:
           git fetch origin
           git checkout origin/demo-2
           git pull origin demo-2
-          git diff --name-only web...demo-2 admin/ | xargs -I {} git checkout origin/demo-2 -- {}
+          # Reset any changes within the admin folder in demo-2 to ensure clean merge
+          git reset --hard
+          git clean -df
+          # Check out only the differences from main into demo-2's admin folder
+          git diff --name-only origin/web...demo-2 admin/ | xargs -I {} git checkout origin/web -- {}
+          # Add and commit changes
+          git add .
+          git commit -m "Merge changes from main into demo-2's admin folder"
+          # Merge changes from main into demo-2
           git merge origin/web
           git push origin HEAD:demo-2
