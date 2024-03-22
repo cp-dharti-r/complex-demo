@@ -34,7 +34,7 @@ jobs:
           git diff --name-only origin/web...demo-2 admin/ | xargs -I {} git checkout origin/web -- {}
           # Add and commit changes
           git add .
-          git commit -m "Merge changes from main into demo-2's admin folder"
+          # git commit -m "Merge changes from main into demo-2's admin folder"
           # Merge changes from main into demo-2
           git merge origin/web
           git push origin HEAD:demo-2
