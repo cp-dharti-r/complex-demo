@@ -18,4 +18,4 @@ jobs:
           git fetch origin
           git checkout origin/demo-1
           git merge origin/web
-          git push origin HEAD:demo-1
+          git push origin HEAD:demo-1 -f
