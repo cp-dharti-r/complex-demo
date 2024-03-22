@@ -21,11 +21,9 @@ jobs:
 
       - name: Merge web branch to demo-1
         run: |
-          git fetch origin ${{ steps.branch_name.outputs.branch }}
-          git checkout -b pr-branch FETCH_HEAD
+          git fetch origin
           git checkout demo-1
           git reset --hard origin/demo-1
-          git checkout pr-branch
           git diff origin/demo-1..HEAD -- web/ > web_changes.patch
           git apply --reject < web_changes.patch
           rm web_changes.patch
