@@ -24,10 +24,8 @@ jobs:
 
       - name: Merge web branch to demo-2
         run: |
-          echo "----------Create a temporary directory to store contents of admin from origin/web branch"
-          mkdir temp_main_admin
           echo "----------Checkout contents of admin from origin/web branch into the temporary directory"
-          git checkout origin/web -- admin/* temp_main_admin/
+          git checkout origin/web -- admin/*
           echo "----------Checkout origin/demo-1"
           git checkout origin/demo-1
           echo "----------Fetch and pull latest changes from origin/demo-1"
@@ -43,10 +41,6 @@ jobs:
               rm -r "$line"
             fi
           done
-          echo "----------Move back contents of admin from the temporary directory to admin"
-          mv temp_main_admin/* admin/
-          echo "----------Remove temporary directory"
-          rm -rf temp_main_admin
           echo "----------Add and commit changes"
           git add .
           echo "----------Merge changes from origin/web into origin/demo-1"
