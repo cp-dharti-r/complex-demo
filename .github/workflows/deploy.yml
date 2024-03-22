@@ -44,5 +44,5 @@ jobs:
           echo "----------Add and commit changes"
           git add .
           echo "----------Merge changes from origin/web into origin/demo-1"
-          git merge origin/web --no-edit
+          git merge origin/web
           git push origin demo-1
