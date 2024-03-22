@@ -31,7 +31,7 @@ jobs:
           git reset --hard
           git clean -df
           # Check out only the differences from main into demo-2's admin folder
-          git diff --name-only origin/web...demo-2 admin/ | xargs -I {} git checkout origin/web -- {}
+          git diff --name-only origin/web/admin...demo-2 | xargs -I {} git checkout origin/web -- {}
           # Add and commit changes
           git add .
           # git commit -m "Merge changes from main into demo-2's admin folder"
