@@ -19,7 +19,7 @@ jobs:
       - name: Checkout demo-1 branch
         run: git checkout demo-1
 
-      - name: Merge web branch to demo-2
+      - name: Merge web branch to demo-1
         run: |
           git fetch origin
           git checkout origin/demo-1
@@ -27,3 +27,12 @@ jobs:
           git diff --name-only web...demo-1 web/ | xargs -I {} git checkout origin/demo-1 -- {}
           git merge origin/web
           git push origin HEAD:demo-1
+
+      - name: Merge web branch to demo-2
+        run: |
+          git fetch origin
+          git checkout origin/demo-2
+          git pull origin demo-2
+          git diff --name-only web...demo-2 admin/ | xargs -I {} git checkout origin/demo-2 -- {}
+          git merge origin/web
+          git push origin HEAD:demo-2
