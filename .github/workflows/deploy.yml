@@ -23,8 +23,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git config user.email "dharti.r@canopas.com"
-          git config user.name "cp-dharti-r"
+          git config user.email dharti.r@canopas.com
+          git config user.name cp-dharti-r
           git fetch origin
           git checkout demo-1
           git merge origin/web --no-edit
