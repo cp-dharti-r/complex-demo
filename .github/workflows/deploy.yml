@@ -1,7 +1,7 @@
 name: Merge with Demo-1 Check
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -24,7 +24,7 @@ jobs:
           git checkout demo-1
           git fetch origin
           git pull origin demo-1
-          git checkout main -- web_folder/
+          git checkout main -- web/
           git checkout demo-1
           git merge main --no-edit
           git push origin demo-1
