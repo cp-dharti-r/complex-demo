@@ -30,9 +30,9 @@ jobs:
           echo "------------------------Check out the contents of admin from origin/web branch to a temporary directory"
           git checkout origin/web -- admin/
           echo "------------------------Check out the contents of admin from demo-2 to a temporary directory"
-          git checkout origin/demo-2 -- admin_temp/
+          git checkout origin/demo-2
           echo "------------------------Diff the contents of admin between origin/web and demo-2"
-          git diff --name-only admin/ admin_temp/ | xargs -I {} git checkout origin/web -- {}
+          git diff --name-only admin/ origin/demo-2 | xargs -I {} git checkout origin/web -- {}
           echo "------------------------Add and commit changes"
           git add .
           echo "------------------------Merge changes from origin/web into demo-2"
