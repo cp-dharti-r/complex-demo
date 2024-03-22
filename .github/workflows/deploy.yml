@@ -26,5 +26,5 @@ jobs:
           git pull origin demo-1
           git diff --name-only main...demo-1 web/ | xargs -I {} git checkout origin/demo-1 -- {}
           git checkout origin/demo-1
-          git merge main --no-edit
+          git merge origin/main --no-edit
           git push origin demo-1
