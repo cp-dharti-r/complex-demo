@@ -28,16 +28,27 @@ jobs:
           mkdir temp_main_admin
           echo "----------Checkout contents of admin from origin/web branch into the temporary directory"
           git checkout origin/web -- admin/* temp_main_admin/
-          echo "----------Checkout demo-2"
-          git checkout origin/demo-2
-          echo "----------Compare contents of admin between origin/web and demo-2"
-          git diff --name-only origin/web...origin/demo-2 admin/ | while read line; do rm -rf "$line"; done
+          echo "----------Checkout origin/demo-1"
+          git checkout origin/demo-1
+          echo "----------Fetch and pull latest changes from origin/demo-1"
+          git fetch origin
+          git pull origin demo-1
+          echo "----------Iterate over each file in the admin"
+          git diff --name-only origin/web...origin/demo-1 admin/ | while read line; do
+            echo "----------If file exists in origin/demo-1, remove it"
+            if [ -f "$line" ]; then
+              rm "$line"
+            echo "----------If directory exists in origin/demo-1, remove it recursively"
+            elif [ -d "$line" ]; then
+              rm -r "$line"
+            fi
+          done
           echo "----------Move back contents of admin from the temporary directory to admin"
           mv temp_main_admin/* admin/
           echo "----------Remove temporary directory"
           rm -rf temp_main_admin
           echo "----------Add and commit changes"
           git add .
-          echo "----------Merge changes from origin/web into demo-2"
-          git merge origin/web
-          git push origin demo-2
+          echo "----------Merge changes from origin/web into origin/demo-1"
+          git merge origin/web --no-edit
+          git push origin demo-1
