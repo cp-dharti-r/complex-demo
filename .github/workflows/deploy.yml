@@ -24,17 +24,20 @@ jobs:
 
       - name: Merge web branch to demo-2
         run: |
-          git fetch origin
+          echo "----------Create a temporary directory to store contents of admin from origin/web branch"
+          mkdir temp_main_admin
+          echo "----------Checkout contents of admin from origin/web branch into the temporary directory"
+          git checkout origin/web -- admin/* temp_main_admin/
+          echo "----------Checkout demo-2"
           git checkout origin/demo-2
-          git pull origin demo-2
-          echo "------------------------Check out the contents of admin from origin/web branch to a temporary directory"
-          git checkout origin/web -- admin/
-          echo "------------------------Check out the contents of admin from demo-2 to a temporary directory"
-          git checkout origin/demo-2 -- ./
-          echo "------------------------Diff the contents of admin between origin/web and demo-2"
-          git diff --name-only admin/ ./ | xargs -I {} git checkout origin/web -- {}
-          echo "------------------------Add and commit changes"
+          echo "----------Compare contents of admin between origin/web and demo-2"
+          git diff --name-only origin/web...origin/demo-2 admin/ | while read line; do rm -rf "$line"; done
+          echo "----------Move back contents of admin from the temporary directory to admin"
+          mv temp_main_admin/* admin/
+          echo "----------Remove temporary directory"
+          rm -rf temp_main_admin
+          echo "----------Add and commit changes"
           git add .
-          echo "------------------------Merge changes from origin/web into demo-2"
+          echo "----------Merge changes from origin/web into demo-2"
           git merge origin/web
-          git push origin HEAD:demo-2
+          git push origin demo-2
