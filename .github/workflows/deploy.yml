@@ -45,4 +45,4 @@ jobs:
           git add .
           echo "----------Merge changes from origin/web into origin/demo-1"
           git merge origin/web
-          git push origin demo-1
+          git push origin HEAD:demo-2
