@@ -28,3 +28,13 @@ jobs:
           git checkout demo-1
           git merge origin/web --no-edit
           git push origin demo-1
+
+      - name: Merge web branch to demo-2
+        run: |
+          git checkout demo-2
+          git fetch origin
+          git pull origin demo-2
+          git checkout origin/web -- admin/
+          git checkout demo-2
+          git merge origin/web --no-edit
+          git push origin demo-2
