@@ -16,5 +16,5 @@ jobs:
       - name: Merge web branch to demo-1
         run: |
           git fetch origin
-          git checkout demo-1
+          git checkout origin/demo-1
           git merge origin/web
