@@ -27,6 +27,7 @@ jobs:
           if [ "$(git diff origin/main:web origin/demo-1 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the web folder after build. Pushing changes to demo-1 branch."
             git checkout demo-1
+            git rm -r *
             git checkout main -- web
             git mv web/* .
             ls
@@ -46,6 +47,7 @@ jobs:
           if [ "$(git diff origin/main:admin origin/demo-2 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the admin folder after build. Pushing changes to demo-2 branch."
             git checkout demo-2
+            git rm -r *
             git checkout main -- admin
             git mv admin/* .
             ls
