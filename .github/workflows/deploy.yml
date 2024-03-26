@@ -1,7 +1,7 @@
 name: Merge with Demo-1 Check
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -13,13 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Fetch and reset main branch
+        run: |
+          git fetch origin main
+          git checkout main
+          git reset --hard origin/main
+
       - name: Merge web branch to demo-1
         run: |
           git fetch origin
-          if [ "$(git diff origin/web:web origin/demo-1 | wc -l)" -gt "0" ]; then
+          if [ "$(git diff origin/main:web origin/demo-1 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the web folder after build. Pushing changes to demo-1 branch."
             git checkout demo-1
-            git checkout web -- web
+            git checkout main -- web
             git mv web/* .
             rm -r web
             git add .
@@ -32,10 +38,10 @@ jobs:
       - name: Merge admin branch to demo-2
         run: |
           git fetch origin
-          if [ "$(git diff origin/web:admin origin/demo-2 | wc -l)" -gt "0" ]; then
+          if [ "$(git diff origin/main:admin origin/demo-2 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the admin folder after build. Pushing changes to demo-2 branch."
             git checkout demo-2
-            git checkout web -- admin
+            git checkout main -- admin
             git mv admin/* .
             rm -r admin
             git add .
