@@ -24,8 +24,26 @@ jobs:
       - name: Merge web branch to demo-2
         run: |
           git fetch origin
-          if [ "$(git diff --ignore-space-at-eol origin/web:admin/ origin/demo-2 | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes after build.  See status below:"
-            git diff origin/web:admin/ origin/demo-2
+          # if [ "$(git diff --ignore-space-at-eol origin/web:admin/ origin/demo-2 | wc -l)" -gt "0" ]; then
+          #   echo "Detected uncommitted changes after build.  See status below:"
+          #   git diff origin/web:admin/ origin/demo-2
+          # fi
+          if [ "$(git diff main/admin origin/demo-2 --name-only | grep '^admin/' | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes in the admin folder after build.  Pushing changes to demo-2 branch."
+            
+            # Checkout demo-2 branch
+            git checkout demo-2
+
+            # Merge changes from main/admin branch to demo-2
+            git merge main/admin --no-commit
+            
+            # Commit the changes
+            git commit -m "Merging changes from main/admin branch"
+
+            # Push changes to the remote demo-2 branch
+            git push origin demo-2
+
+            exit 0
           fi
+
 
