@@ -24,8 +24,8 @@ jobs:
 
       - name: Merge web branch to demo-2
         run: |
-          if [ "$(git diff --ignore-space-at-eol web:admin/ origin/demo-2:admin/ | wc -l)" -gt "0" ]; then
+          if [ "$(git diff --ignore-space-at-eol origin/web:admin/ origin/demo-2:admin/ | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
-            git diff web:admin/ origin/demo-2:admin/
+            git diff origin/web:admin/ origin/demo-2:admin/
           fi
 
