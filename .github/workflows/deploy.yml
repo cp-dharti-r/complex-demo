@@ -16,34 +16,31 @@ jobs:
       - name: Merge web branch to demo-1
         run: |
           git fetch origin
-          if [ "$(git diff --ignore-space-at-eol origin/web:web/ origin/demo-1 | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes after build.  See status below:"
-            git diff origin/web:web/ origin/demo-1
+          if [ "$(git diff origin/main:web origin/demo-1 | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes in the web folder after build. Pushing changes to demo-1 branch."
+            git checkout demo-1
+            git checkout main -- web
+            git mv web/* .
+            rm -r web
+            git add .
+            git commit -m "Update web folder contents"
+            git push origin demo-1
+          else
+            echo "No changes detected in the web folder after build. Exiting."
           fi
 
-      - name: Merge web branch to demo-2
+      - name: Merge admin branch to demo-2
         run: |
           git fetch origin
-          # if [ "$(git diff --ignore-space-at-eol origin/web:admin/ origin/demo-2 | wc -l)" -gt "0" ]; then
-          #   echo "Detected uncommitted changes after build.  See status below:"
-          #   git diff origin/web:admin/ origin/demo-2
-          # fi
-          if [ "$(git diff main:web origin/demo-1 --name-only | grep '^web/' | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes in the web folder after build.  Pushing changes to demo-1 branch."
-            
-            # Checkout demo-1 branch
-            git checkout demo-1
-
-            # Merge changes from main:web branch to demo-1
-            git merge main:web --no-commit
-            
-            # Commit the changes
-            git commit -m "Merging changes from main:web branch"
-
-            # Push changes to the remote demo-1 branch
-            git push origin demo-1
-
-            exit 0
+          if [ "$(git diff origin/main:admin origin/demo-2 | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes in the admin folder after build. Pushing changes to demo-2 branch."
+            git checkout demo-2
+            git checkout main -- admin
+            git mv admin/* .
+            rm -r admin
+            git add .
+            git commit -m "Update admin folder contents"
+            git push origin demo-2
+          else
+            echo "No changes detected in the admin folder after build. Exiting."
           fi
-
-
