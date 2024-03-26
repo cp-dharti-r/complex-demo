@@ -28,20 +28,20 @@ jobs:
           #   echo "Detected uncommitted changes after build.  See status below:"
           #   git diff origin/web:admin/ origin/demo-2
           # fi
-          if [ "$(git diff main/admin origin/demo-2 --name-only | grep '^admin/' | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes in the admin folder after build.  Pushing changes to demo-2 branch."
+          if [ "$(git diff main:web origin/demo-1 --name-only | grep '^web/' | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes in the web folder after build.  Pushing changes to demo-1 branch."
             
-            # Checkout demo-2 branch
-            git checkout demo-2
+            # Checkout demo-1 branch
+            git checkout demo-1
 
-            # Merge changes from main/admin branch to demo-2
-            git merge main/admin --no-commit
+            # Merge changes from main:web branch to demo-1
+            git merge main:web --no-commit
             
             # Commit the changes
-            git commit -m "Merging changes from main/admin branch"
+            git commit -m "Merging changes from main:web branch"
 
-            # Push changes to the remote demo-2 branch
-            git push origin demo-2
+            # Push changes to the remote demo-1 branch
+            git push origin demo-1
 
             exit 0
           fi
