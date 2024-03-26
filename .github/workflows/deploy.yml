@@ -13,14 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Merge web branch to demo-1
-      #   run: |
-      #     git fetch origin
-      #     git checkout origin/demo-1
-      #     git pull origin demo-1
-      #     git diff --name-only web...demo-1 web/ | xargs -I {} git checkout origin/demo-1 -- {}
-      #     git merge origin/web
-      #     git push origin HEAD:demo-1
+      - name: Merge web branch to demo-1
+        run: |
+          git fetch origin
+          if [ "$(git diff --ignore-space-at-eol origin/web:web/ origin/demo-1:web/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff origin/web:web/ origin/demo-1:web/
+          fi
 
       - name: Merge web branch to demo-2
         run: |
