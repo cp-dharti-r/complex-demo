@@ -16,10 +16,10 @@ jobs:
       - name: Merge web branch to demo-1
         run: |
           git fetch origin
-          if [ "$(git diff origin/main:web origin/demo-1 | wc -l)" -gt "0" ]; then
+          if [ "$(git diff origin/web:web origin/demo-1 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the web folder after build. Pushing changes to demo-1 branch."
             git checkout demo-1
-            git checkout main -- web
+            git checkout web -- web
             git mv web/* .
             rm -r web
             git add .
@@ -32,10 +32,10 @@ jobs:
       - name: Merge admin branch to demo-2
         run: |
           git fetch origin
-          if [ "$(git diff origin/main:admin origin/demo-2 | wc -l)" -gt "0" ]; then
+          if [ "$(git diff origin/web:admin origin/demo-2 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the admin folder after build. Pushing changes to demo-2 branch."
             git checkout demo-2
-            git checkout main -- admin
+            git checkout web -- admin
             git mv admin/* .
             rm -r admin
             git add .
