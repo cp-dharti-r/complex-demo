@@ -18,7 +18,7 @@ jobs:
           git fetch origin
           if [ "$(git diff --ignore-space-at-eol origin/web:web/ origin/demo-1 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
-            git diff origin/web:web/ origin/demo-1/
+            git diff origin/web:web/ origin/demo-1
           fi
 
       - name: Merge web branch to demo-2
@@ -26,6 +26,6 @@ jobs:
           git fetch origin
           if [ "$(git diff --ignore-space-at-eol origin/web:admin/ origin/demo-2 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
-            git diff origin/web:admin/ origin/demo-2/
+            git diff origin/web:admin/ origin/demo-2
           fi
 
