@@ -13,36 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Merge web branch to demo-1
-        run: |
-          git fetch origin
-          git checkout origin/demo-1
-          git pull origin demo-1
-          git diff --name-only web...demo-1 web/ | xargs -I {} git checkout origin/demo-1 -- {}
-          git merge origin/web
-          git push origin HEAD:demo-1
+      # - name: Merge web branch to demo-1
+      #   run: |
+      #     git fetch origin
+      #     git checkout origin/demo-1
+      #     git pull origin demo-1
+      #     git diff --name-only web...demo-1 web/ | xargs -I {} git checkout origin/demo-1 -- {}
+      #     git merge origin/web
+      #     git push origin HEAD:demo-1
 
       - name: Merge web branch to demo-2
         run: |
-          echo "----------Checkout contents of admin from origin/web branch into the temporary directory"
-          git checkout origin/web -- admin/*
-          echo "----------Checkout origin/demo-1"
-          git checkout origin/demo-1
-          echo "----------Fetch and pull latest changes from origin/demo-1"
-          git fetch origin
-          git pull origin demo-1
-          echo "----------Iterate over each file in the admin"
-          git diff --name-only origin/web...origin/demo-1 admin/ | while read line; do
-            echo "----------If file exists in origin/demo-1, remove it"
-            if [ -f "$line" ]; then
-              rm "$line"
-            echo "----------If directory exists in origin/demo-1, remove it recursively"
-            elif [ -d "$line" ]; then
-              rm -r "$line"
-            fi
-          done
-          echo "----------Add and commit changes"
-          git add .
-          echo "----------Merge changes from origin/web into origin/demo-1"
-          git merge origin/web
-          git push origin HEAD:demo-2
+          if [ "$(git diff --ignore-space-at-eol web:admin/ origin/demo-2:admin/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build.  See status below:"
+            git diff web:admin/ origin/demo-2:admin/
+          fi
+
