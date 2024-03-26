@@ -22,11 +22,14 @@ jobs:
       - name: Merge web branch to demo-1
         run: |
           git fetch origin
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           if [ "$(git diff origin/main:web origin/demo-1 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the web folder after build. Pushing changes to demo-1 branch."
             git checkout demo-1
             git checkout main -- web
             git mv web/* .
+            ls
             rm -r web
             git add .
             git commit -m "Update web folder contents"
@@ -38,11 +41,14 @@ jobs:
       - name: Merge admin branch to demo-2
         run: |
           git fetch origin
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           if [ "$(git diff origin/main:admin origin/demo-2 | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes in the admin folder after build. Pushing changes to demo-2 branch."
             git checkout demo-2
             git checkout main -- admin
             git mv admin/* .
+            ls
             rm -r admin
             git add .
             git commit -m "Update admin folder contents"
